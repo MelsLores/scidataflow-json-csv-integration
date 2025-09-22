@@ -1,0 +1,9 @@
+{
+  "id": 9,
+  "firstName": "Alice",
+  "lastName": "Thompson",
+  "email": "alice.thompson@example.com",
+  "age": 27,
+  "department": "Design",
+  "salary": 62000.00
+}

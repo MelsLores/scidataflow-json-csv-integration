@@ -1,0 +1,34 @@
+{
+  "department": "Scientometrics",
+  "report_period": "2025-01-01 to 2025-02-28",
+  "generated_by": "Beatriz Solórzano",
+  "publications": [
+    {
+      "id": "PUB-001",
+      "title": "Artificial Intelligence in Higher Education",
+      "authors": ["Dr. Ana Torres", "Beatriz Solórzano"],
+      "journal": "Journal of Educational Technology",
+      "year": 2025,
+      "citations": 12,
+      "keywords": ["AI", "Education", "Technology"]
+    },
+    {
+      "id": "PUB-002",
+      "title": "Data Integration for Scientometrics",
+      "authors": ["Dr. Carlos Hernández", "Hortensia López"],
+      "journal": "International Journal of Information Science",
+      "year": 2025,
+      "citations": 8,
+      "keywords": ["Data Processing", "Integration", "JSON", "CSV"]
+    },
+    {
+      "id": "PUB-003",
+      "title": "Sustainable Research Practices in Latin America",
+      "authors": ["Érika Martínez", "Beatriz Solórzano"],
+      "journal": "Latin American Science Review",
+      "year": 2024,
+      "citations": 20,
+      "keywords": ["Sustainability", "Research", "Policy"]
+    }
+  ]
+}
