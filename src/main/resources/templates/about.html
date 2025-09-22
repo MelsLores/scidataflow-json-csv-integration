@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">About JSON-CSV Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .version-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .tech-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .tech-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+        
+        .back-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: transform 0.3s ease;
+            margin-top: 2rem;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .nav-links {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="/">🏠 Inicio</a>
+            <a href="/about">About</a>
+            <a href="/api/v1/converter/health">🩺 Estado API</a>
+        </div>
+        
+        <div class="header">
+            <h1>About the System</h1>
+            <p th:text="${description}"></p>
+            <span class="version-badge" th:text="'Versión ' + ${version}"></span>
+        </div>
+        
+        <div class="stats-section">
+            <h2>📊 Estadísticas del Sistema</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">43</span>
+                    <span>Tests Unitarios</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span>Cobertura</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <span>Servicios</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">REST</span>
+                    <span>API</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>Easy Upload</h3>
+                <p>Drag and drop JSON files or use the file selector</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>Delimiters</h3>
+                <p>Configure custom delimiters (comma, semicolon, pipe, tab)</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Fast Processing</h3>
+                <p>Optimized conversion with robust error handling</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>Direct Download</h3>
+                <p>Immediate download of converted CSV files</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>REST API</h3>
+                <p>Programmatic endpoints for integration with other systems</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Validation</h3>
+                <p>Complete file validation and exception handling</p>
+            </div>
+        </div>
+        
+        <div class="tech-section">
+            <h2>Technologies Used</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <strong>☕ Java 17</strong><br>
+                    <small>Runtime Environment</small>
+                </div>
+                <div class="tech-item">
+                    <strong>Spring Boot 3.5.6</strong><br>
+                    <small>Web Framework</small>
+                </div>
+                <div class="tech-item">
+                    <strong>🏗️ Maven 3.9.5</strong><br>
+                    <small>Build Tool</small>
+                </div>
+                <div class="tech-item">
+                    <strong>🌿 Thymeleaf</strong><br>
+                    <small>Template Engine</small>
+                </div>
+                <div class="tech-item">
+                    <strong>📄 Jackson</strong><br>
+                    <small>JSON Processing</small>
+                </div>
+                <div class="tech-item">
+                    <strong>📊 OpenCSV</strong><br>
+                    <small>CSV Generation</small>
+                </div>
+                <div class="tech-item">
+                    <strong>🧪 JUnit 5</strong><br>
+                    <small>Unit Testing</small>
+                </div>
+                <div class="tech-item">
+                    <strong>🎭 Mockito</strong><br>
+                    <small>Mocking Framework</small>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 15px; margin: 2rem 0;">
+            <h3>Available API Endpoints:</h3>
+            <ul style="margin-top: 1rem; line-height: 1.8;">
+                <li><code>GET /api/v1/converter/health</code> - System status</li>
+                <li><code>GET /api/v1/converter/info</code> - Service information</li>
+                <li><code>POST /api/v1/converter/convert</code> - JSON-CSV conversion</li>
+            </ul>
+        </div>
+        
+        <a href="/" class="back-button">
+            🏠 Back
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">JSON to CSV Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            background: #f0f2ff;
+            border-color: #5a67d8;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-button {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+        
+        .file-button:hover {
+            background: #5a67d8;
+        }
+        
+        .delimiter-section {
+            margin-bottom: 2rem;
+        }
+        
+        .delimiter-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .delimiter-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .convert-button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .convert-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .convert-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .selected-file {
+            margin-top: 1rem;
+            padding: 10px;
+            background: #e6ffed;
+            border-radius: 5px;
+            color: #2d7d32;
+        }
+        
+        .nav-links {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <h1>JSON to CSV</h1>
+            <p>Convert JSON files to CSV format easily</p>
+        </div>
+        
+        <form th:action="@{/convert}" method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="upload-area" onclick="document.getElementById('jsonFile').click()">
+                <div class="upload-icon">📁</div>
+                <h3>Select your JSON file</h3>
+                <p>Click here or drag your file</p>
+                <input type="file" id="jsonFile" name="jsonFile" accept=".json" class="file-input" required>
+                <button type="button" class="file-button">Choose File</button>
+                <div id="selectedFile" class="selected-file" style="display: none;"></div>
+            </div>
+            
+            <div class="delimiter-section">
+                <label for="delimiter">CSV Delimiter:</label>
+                <select name="delimiter" id="delimiter" class="delimiter-select">
+                    <option value=",">Comma (,)</option>
+                    <option value=";">Semicolon (;)</option>
+                    <option value="|">Pipe (|)</option>
+                    <option value="	">Tab (\t)</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="convert-button" id="convertBtn" disabled>
+                Convert to CSV
+            </button>
+        </form>
+        
+        <div class="footer">
+            <p>🔧 <strong>SciDataFlow</strong> - JSON-CSV Conversion System</p>
+           
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('jsonFile');
+        const selectedFileDiv = document.getElementById('selectedFile');
+        const convertBtn = document.getElementById('convertBtn');
+        
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFileDiv.innerHTML = `
+                    <strong>Selected file:</strong><br>
+                    ${file.name} (${(file.size / 1024).toFixed(2)} KB)
+                `;
+                selectedFileDiv.style.display = 'block';
+                convertBtn.disabled = false;
+                convertBtn.textContent = 'Convert ' + file.name;
+            }
+        });
+        
+        const uploadArea = document.querySelector('.upload-area');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        uploadArea.addEventListener('drop', handleDrop, false);
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        function highlight(e) {
+            uploadArea.style.background = '#e3f2fd';
+            uploadArea.style.borderColor = '#2196f3';
+        }
+        
+        function unhighlight(e) {
+            uploadArea.style.background = '#f8f9ff';
+            uploadArea.style.borderColor = '#667eea';
+        }
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                fileInput.files = files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        }
+    </script>
+</body>
+</html>
