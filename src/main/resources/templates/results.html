@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,55 +138,55 @@
     <div class="container">
         <div class="nav-links">
             <a href="/">🏠 Inicio</a>
-            <a href="/about">📋 Acerca de</a>
+            <a href="/about">About</a>
             <a href="/api/v1/converter/health">🩺 Estado API</a>
         </div>
         
         <div class="header">
-            <h1>📊 Resultados de Conversión</h1>
+            <h1>📊 Conversion Results</h1>
         </div>
         
-        <!-- Mensaje de éxito -->
+        <!-- Success message -->
         <div th:if="${success}" class="success-message">
             <div class="success-icon">✅</div>
-            <h2>¡Conversión Exitosa!</h2>
+            <h2>Success!</h2>
             <p th:text="${success}"></p>
         </div>
         
-        <!-- Mensaje de error -->
+        <!-- Error message -->
         <div th:if="${error}" class="error-message">
             <div class="success-icon">❌</div>
-            <h2>Error en la Conversión</h2>
+            <h2>Error</h2>
             <p th:text="${error}"></p>
         </div>
         
-        <!-- Información del archivo convertido -->
+        <!-- Converted file information -->
         <div th:if="${success} and ${csvFile}" class="file-info">
-            <h3>📄 Detalles del Archivo</h3>
+            <h3>File Details</h3>
             <div class="file-detail">
-                <span><strong>Archivo Original:</strong></span>
+                <span><strong>Original File:</strong></span>
                 <span th:text="${originalFile}"></span>
             </div>
             <div class="file-detail">
-                <span><strong>Archivo CSV:</strong></span>
+                <span><strong>CSV File:</strong></span>
                 <span th:text="${csvFile}"></span>
             </div>
             <div class="file-detail" th:if="${fileSize}">
-                <span><strong>Tamaño:</strong></span>
+                <span><strong>Size:</strong></span>
                 <span th:text="${fileSize} + ' bytes'"></span>
             </div>
         </div>
-        
-        <!-- Botón de descarga -->
+
+        <!-- Download button -->
         <a th:if="${success} and ${csvFile}" 
            th:href="@{'/download/' + ${#strings.substringAfter(csvFile, 'downloads/')}}"
            class="download-button">
-            💾 Descargar Archivo CSV
+            Download CSV File
         </a>
-        
-        <!-- Botón volver -->
+
+        <!-- Back button -->
         <a href="/" class="back-button">
-            🔄 Convertir Otro Archivo
+            Convert Another File
         </a>
     </div>
 </body>

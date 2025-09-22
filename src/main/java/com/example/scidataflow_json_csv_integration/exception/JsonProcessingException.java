@@ -1,8 +1,8 @@
 package com.example.scidataflow_json_csv_integration.exception;
 
 /**
- * Clase de excepción personalizada para manejar errores de procesamiento JSON.
- * Esta excepción se lanza cuando hay problemas leyendo o analizando archivos JSON.
+ * Custom exception class for handling JSON processing errors.
+ * This exception is thrown when there are problems reading or parsing JSON files.
  * 
  * @author Melany Rivera
  * @since 21/09/2025
@@ -10,9 +10,9 @@ package com.example.scidataflow_json_csv_integration.exception;
 public class JsonProcessingException extends Exception {
     
     /**
-     * Construye una nueva JsonProcessingException con el mensaje de detalle especificado.
+     * Constructs a new JsonProcessingException with the specified detail message.
      * 
-     * @param message el mensaje de detalle que explica la causa de la excepción
+     * @param message the detail message that explains the cause of the exception
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -22,10 +22,10 @@ public class JsonProcessingException extends Exception {
     }
     
     /**
-     * Construye una nueva JsonProcessingException con el mensaje de detalle y causa especificados.
+     * Constructs a new JsonProcessingException with the specified detail message and cause.
      * 
-     * @param message el mensaje de detalle que explica la causa de la excepción
-     * @param cause la causa de la excepción
+     * @param message the detail message that explains the cause of the exception
+     * @param cause the cause of the exception
      * 
      * @author Melany Rivera
      * @since 21/09/2025

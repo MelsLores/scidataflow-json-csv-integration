@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 /**
- * Representa a una persona con información básica.
- * Esta clase sirve como objeto de transferencia de datos para operaciones de conversión JSON-CSV.
+ * Represents a person with basic information.
+ * This class serves as a data transfer object for JSON-CSV conversion operations.
  * 
  * @author Melany Rivera
  * @since 21/09/2025

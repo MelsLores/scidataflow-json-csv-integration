@@ -165,7 +165,7 @@ public class JsonToCsvConverterService {
      * @throws JsonProcessingException if any JSON file cannot be read or parsed
      * @throws CsvWritingException if the CSV file cannot be written
      * 
-     * @example
+     * Ejemplo de uso:
      * <pre>
      * JsonToCsvConverterService converter = new JsonToCsvConverterService(jsonReader, csvWriter);
      * String[] jsonFiles = {"input/persons1.json", "input/persons2.json"};

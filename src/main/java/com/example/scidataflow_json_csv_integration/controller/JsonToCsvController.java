@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Controlador REST para la conversión de archivos JSON a CSV.
+ * REST controller for JSON to CSV file conversion.
  * 
  * @author Melany Rivera
  * @since 21/09/2025
@@ -21,9 +21,9 @@ public class JsonToCsvController {
     private final JsonToCsvConverterService converterService;
 
     /**
-     * Constructor que inyecta el servicio de conversión.
+     * Constructor that injects the conversion service.
      *
-     * @param converterService Servicio de conversión JSON a CSV
+     * @param converterService JSON to CSV conversion service
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -33,9 +33,9 @@ public class JsonToCsvController {
     }
 
     /**
-     * Endpoint para verificar el estado de la API.
+     * Endpoint to check the API status.
      *
-     * @return Respuesta con el estado de la API
+     * @return Response with the API status
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -50,10 +50,10 @@ public class JsonToCsvController {
     }
 
     /**
-     * Convierte un archivo JSON a CSV.
+     * Converts a JSON file to CSV.
      *
-     * @param request Objeto con los parámetros de conversión
-     * @return Respuesta con el resultado de la conversión
+     * @param request Object with conversion parameters
+     * @return Response with the conversion result
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -115,19 +115,55 @@ public class JsonToCsvController {
         private String jsonFilePath;
         private String csvFilePath;
 
-        // Constructores
+        /**
+         * Constructor por defecto para ConversionRequest.
+         * @author Melany Rivera
+         * @since 21/09/2025
+         */
         public ConversionRequest() {}
 
+        /**
+         * Constructor con parámetros para ConversionRequest.
+         * @param jsonFilePath Ruta del archivo JSON de entrada
+         * @param csvFilePath Ruta del archivo CSV de salida
+         * @author Melany Rivera
+         * @since 21/09/2025
+         */
         public ConversionRequest(String jsonFilePath, String csvFilePath) {
             this.jsonFilePath = jsonFilePath;
             this.csvFilePath = csvFilePath;
         }
 
-        // Getters y Setters
+        /**
+         * Obtiene la ruta del archivo JSON.
+         * @return La ruta del archivo JSON
+         * @author Melany Rivera
+         * @since 21/09/2025
+         */
         public String getJsonFilePath() { return jsonFilePath; }
+        
+        /**
+         * Establece la ruta del archivo JSON.
+         * @param jsonFilePath La nueva ruta del archivo JSON
+         * @author Melany Rivera
+         * @since 21/09/2025
+         */
         public void setJsonFilePath(String jsonFilePath) { this.jsonFilePath = jsonFilePath; }
         
+        /**
+         * Obtiene la ruta del archivo CSV.
+         * @return La ruta del archivo CSV
+         * @author Melany Rivera
+         * @since 21/09/2025
+         */
         public String getCsvFilePath() { return csvFilePath; }
+        
+        /**
+         * Establece la ruta del archivo CSV.
+         * @param csvFilePath La nueva ruta del archivo CSV
+         * @author Melany Rivera
+         * @since 21/09/2025
+         */
         public void setCsvFilePath(String csvFilePath) { this.csvFilePath = csvFilePath; }
     }
 }

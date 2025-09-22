@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 /**
- * Clase modelo que representa una publicación científica para análisis cientométricos.
+ * Model class representing a scientific publication for scientometric analysis.
  * 
- * Esta clase representa una publicación de investigación con datos bibliométricos incluyendo
- * identificadores, autoría, detalles de publicación y métricas de citación.
+ * This class represents a research publication with bibliometric data including
+ * identifiers, authorship, publication details, and citation metrics.
  * 
  * @author Melany Rivera
  * @since 21/09/2025
@@ -213,6 +213,13 @@ public class Publication {
         return keywords != null ? String.join("; ", keywords) : "";
     }
 
+    /**
+     * Returns a string representation of this publication.
+     * 
+     * @return string representation containing all publication fields
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     @Override
     public String toString() {
         return "Publication{" +
@@ -226,6 +233,15 @@ public class Publication {
                 '}';
     }
 
+    /**
+     * Compares this publication with another object for equality.
+     * Two publications are considered equal if they have the same ID.
+     * 
+     * @param o the object to compare with
+     * @return true if objects are equal, false otherwise
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -236,6 +252,14 @@ public class Publication {
         return id != null ? id.equals(that.id) : that.id == null;
     }
 
+    /**
+     * Returns hash code value for this publication.
+     * Hash code is based on the publication ID.
+     * 
+     * @return hash code value
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;

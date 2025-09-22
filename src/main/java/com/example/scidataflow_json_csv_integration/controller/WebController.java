@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Controlador web para la interfaz de conversor JSON a CSV.
+ * Web controller for the JSON to CSV converter interface.
  * 
- * Este controlador proporciona endpoints web para que los usuarios interactúen
- * con la funcionalidad de conversión JSON-CSV a través de una interfaz de navegador.
+ * This controller provides web endpoints for users to interact
+ * with JSON-CSV conversion functionality through a browser interface.
  * 
  * @author Melany Rivera
  * @since 21/09/2025
@@ -31,10 +31,10 @@ public class WebController {
     private JsonToCsvConverterService converterService;
 
     /**
-     * Muestra la página principal del conversor.
+     * Shows the converter main page.
      * 
-     * @param model Spring Model para renderizado de plantillas
-     * @return el nombre de la plantilla converter
+     * @param model Spring Model for template rendering
+     * @return the converter template name
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -47,10 +47,10 @@ public class WebController {
     }
 
     /**
-     * Muestra la página about con información del sistema.
+     * Shows the about page with system information.
      * 
-     * @param model Spring Model para renderizado de plantillas
-     * @return el nombre de la plantilla about
+     * @param model Spring Model for template rendering
+     * @return the about template name
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -64,12 +64,12 @@ public class WebController {
     }
 
     /**
-     * Maneja la carga de archivos JSON y los convierte a CSV.
+     * Handles JSON file upload and converts them to CSV.
      * 
-     * @param file el archivo JSON subido
-     * @param delimiter el delimitador CSV a usar
-     * @param redirectAttributes para mensajes flash
-     * @return redirección a la página de resultados
+     * @param file the uploaded JSON file
+     * @param delimiter the CSV delimiter to use
+     * @param redirectAttributes for flash messages
+     * @return redirection to the results page
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -117,10 +117,10 @@ public class WebController {
     }
 
     /**
-     * Muestra la página de resultados de conversión.
+     * Shows the conversion results page.
      * 
-     * @param model Spring Model para renderizado de plantillas
-     * @return el nombre de la plantilla results
+     * @param model Spring Model for template rendering
+     * @return the results template name
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -155,9 +155,9 @@ public class WebController {
     }
 
     /**
-     * Crea los directorios necesarios si no existen.
+     * Creates necessary directories if they do not exist.
      * 
-     * @throws IOException si ocurre un error al crear los directorios
+     * @throws IOException if an error occurs while creating directories
      * 
      * @author Melany Rivera
      * @since 21/09/2025

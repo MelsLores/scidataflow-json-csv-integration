@@ -14,9 +14,9 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Servicio para escribir archivos CSV desde datos de Person.
- * Proporciona funcionalidad para generar contenido CSV con diferentes delimitadores
- * y opciones de configuración, incluyendo manejo de errores integral.
+ * Service for writing CSV files from Person data.
+ * Provides functionality to generate CSV content with different delimiters
+ * and configuration options, including comprehensive error handling.
  * 
  * @author Melany Rivera
  * @since 21/09/2025
@@ -41,12 +41,12 @@ public class CsvWriterService {
     private static final char DEFAULT_ESCAPE_CHAR = '\\';
 
     /**
-     * Escribe una lista de objetos Person a un archivo CSV usando configuración por defecto.
-     * Crea un archivo CSV con delimitadores de coma y formato estándar.
+     * Writes a list of Person objects to a CSV file using default configuration.
+     * Creates a CSV file with comma delimiters and standard formatting.
      * 
-     * @param persons la lista de objetos Person a escribir en CSV
-     * @param filePath la ruta donde se creará el archivo CSV
-     * @throws CsvWritingException si el archivo no puede ser escrito o creado
+     * @param persons the list of Person objects to write to CSV
+     * @param filePath the path where the CSV file will be created
+     * @throws CsvWritingException if the file cannot be written or created
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -56,15 +56,15 @@ public class CsvWriterService {
     }
 
     /**
-     * Escribe una lista de objetos Person a un archivo CSV con configuración personalizada.
-     * Permite personalización del formato CSV incluyendo delimitador, carácter de comillas y carácter de escape.
+     * Writes a list of Person objects to a CSV file with custom configuration.
+     * Allows customization of CSV format including delimiter, quote character, and escape character.
      * 
-     * @param persons la lista de objetos Person a escribir en CSV
-     * @param filePath la ruta donde se creará el archivo CSV
-     * @param delimiter el carácter a usar como delimitador de campos
-     * @param quoteChar el carácter a usar para entrecomillar campos
-     * @param escapeChar el carácter a usar para escapar caracteres especiales
-     * @throws CsvWritingException si el archivo no puede ser escrito o creado
+     * @param persons the list of Person objects to write to CSV
+     * @param filePath the path where the CSV file will be created
+     * @param delimiter the character to use as field delimiter
+     * @param quoteChar the character to use for quoting fields
+     * @param escapeChar the character to use for escaping special characters
+     * @throws CsvWritingException if the file cannot be written or created
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -111,12 +111,12 @@ public class CsvWriterService {
     }
 
     /**
-     * Escribe un objeto Person individual a un archivo CSV.
-     * Es útil cuando necesita escribir registros de personas individuales.
+     * Writes an individual Person object to a CSV file.
+     * Useful when you need to write individual person records.
      * 
-     * @param person el objeto Person a escribir en CSV
-     * @param filePath la ruta donde se creará el archivo CSV
-     * @throws CsvWritingException si el archivo no puede ser escrito o creado
+     * @param person the Person object to write to CSV
+     * @param filePath the path where the CSV file will be created
+     * @throws CsvWritingException if the file cannot be written or created
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -130,12 +130,12 @@ public class CsvWriterService {
     }
 
     /**
-     * Agrega una lista de objetos Person a un archivo CSV existente.
-     * Añade nuevos registros a un archivo CSV existente sin sobrescribir los datos existentes.
+     * Appends a list of Person objects to an existing CSV file.
+     * Adds new records to an existing CSV file without overwriting existing data.
      * 
-     * @param persons la lista de objetos Person a agregar al CSV
-     * @param filePath la ruta del archivo CSV existente
-     * @throws CsvWritingException si el archivo no puede ser escrito o accedido
+     * @param persons the list of Person objects to append to the CSV
+     * @param filePath the path to the existing CSV file
+     * @throws CsvWritingException if the file cannot be written or accessed
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -185,11 +185,11 @@ public class CsvWriterService {
     }
 
     /**
-     * Valida los parámetros de entrada para las operaciones de escritura CSV.
+     * Validates input parameters for CSV writing operations.
      * 
-     * @param persons la lista de objetos Person a validar
-     * @param filePath la ruta del archivo a validar
-     * @throws CsvWritingException si la validación falla
+     * @param persons the list of Person objects to validate
+     * @param filePath the file path to validate
+     * @throws CsvWritingException if validation fails
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -214,10 +214,10 @@ public class CsvWriterService {
     }
 
     /**
-     * Asegura que el directorio padre de la ruta del archivo exista.
+     * Ensures the parent directory of the file path exists.
      * 
-     * @param filePath la ruta del archivo cuyo directorio padre debe ser creado
-     * @throws CsvWritingException si falla la creación del directorio
+     * @param filePath the file path whose parent directory must be created
+     * @throws CsvWritingException if directory creation fails
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -237,9 +237,9 @@ public class CsvWriterService {
     }
 
     /**
-     * Escribe la fila de encabezado del CSV.
+     * Writes the CSV header row.
      * 
-     * @param csvWriter la instancia de CSVWriter para escribir
+     * @param csvWriter the CSVWriter instance for writing
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -251,10 +251,10 @@ public class CsvWriterService {
     }
 
     /**
-     * Escribe los datos de personas al archivo CSV.
+     * Writes person data to the CSV file.
      * 
-     * @param csvWriter la instancia de CSVWriter para escribir
-     * @param persons la lista de objetos Person a escribir
+     * @param csvWriter the CSVWriter instance for writing
+     * @param persons the list of Person objects to write
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -268,10 +268,10 @@ public class CsvWriterService {
     }
 
     /**
-     * Convierte un objeto Person a un arreglo de strings para escritura CSV.
+     * Converts a Person object to a string array for CSV writing.
      * 
-     * @param person el objeto Person a convertir
-     * @return un arreglo de strings conteniendo los datos de la persona
+     * @param person the Person object to convert
+     * @return a string array containing the person's data
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -289,10 +289,10 @@ public class CsvWriterService {
     }
 
     /**
-     * Cierra de forma segura los recursos de CSV writer y file writer.
+     * Safely closes CSV writer and file writer resources.
      * 
-     * @param csvWriter el CSVWriter a cerrar
-     * @param fileWriter el FileWriter a cerrar
+     * @param csvWriter the CSVWriter to close
+     * @param fileWriter the FileWriter to close
      * 
      * @author Melany Rivera
      * @since 21/09/2025
@@ -316,11 +316,11 @@ public class CsvWriterService {
     }
 
     /**
-     * Verifica si una ruta de archivo es válida para escritura.
-     * Este método utilitario puede usarse para validar rutas de archivo antes de intentar escribir.
+     * Verifies if a file path is valid for writing.
+     * This utility method can be used to validate file paths before attempting to write.
      * 
-     * @param filePath la ruta del archivo a validar
-     * @return true si la ruta es válida para escritura, false de lo contrario
+     * @param filePath the file path to validate
+     * @return true if the path is valid for writing, false otherwise
      * 
      * @author Melany Rivera
      * @since 21/09/2025

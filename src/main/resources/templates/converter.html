@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,47 +171,40 @@
 </head>
 <body>
     <div class="container">
-        <div class="nav-links">
-            <a href="/">🏠 Inicio</a>
-            <a href="/about">📋 Acerca de</a>
-            <a href="/api/v1/converter/health">🩺 Estado API</a>
-        </div>
         
         <div class="header">
-            <h1>🔄 JSON to CSV</h1>
-            <p>Convierte archivos JSON a formato CSV fácilmente</p>
-            <small th:text="'Última actualización: ' + ${currentTime}"></small>
+            <h1>JSON to CSV</h1>
+            <p>Convert JSON files to CSV format easily</p>
         </div>
         
         <form th:action="@{/convert}" method="post" enctype="multipart/form-data" id="uploadForm">
             <div class="upload-area" onclick="document.getElementById('jsonFile').click()">
                 <div class="upload-icon">📁</div>
-                <h3>Selecciona tu archivo JSON</h3>
-                <p>Haz clic aquí o arrastra tu archivo</p>
+                <h3>Select your JSON file</h3>
+                <p>Click here or drag your file</p>
                 <input type="file" id="jsonFile" name="jsonFile" accept=".json" class="file-input" required>
-                <button type="button" class="file-button">Elegir Archivo</button>
+                <button type="button" class="file-button">Choose File</button>
                 <div id="selectedFile" class="selected-file" style="display: none;"></div>
             </div>
             
             <div class="delimiter-section">
-                <label for="delimiter">Delimitador CSV:</label>
+                <label for="delimiter">CSV Delimiter:</label>
                 <select name="delimiter" id="delimiter" class="delimiter-select">
-                    <option value=",">Coma (,)</option>
-                    <option value=";">Punto y coma (;)</option>
+                    <option value=",">Comma (,)</option>
+                    <option value=";">Semicolon (;)</option>
                     <option value="|">Pipe (|)</option>
-                    <option value="	">Tabulación (\t)</option>
+                    <option value="	">Tab (\t)</option>
                 </select>
             </div>
             
             <button type="submit" class="convert-button" id="convertBtn" disabled>
-                🚀 Convertir a CSV
+                Convert to CSV
             </button>
         </form>
         
         <div class="footer">
-            <p>🔧 <strong>SciDataFlow</strong> - Sistema de Conversión JSON-CSV</p>
-            <a href="/api/v1/converter/info">📊 Info API</a>
-            <a href="https://github.com/MelsLores/scidataflow-json-csv-integration">🐱 GitHub</a>
+            <p>🔧 <strong>SciDataFlow</strong> - JSON-CSV Conversion System</p>
+           
         </div>
     </div>
 
@@ -224,16 +217,15 @@
             const file = e.target.files[0];
             if (file) {
                 selectedFileDiv.innerHTML = `
-                    <strong>📄 Archivo seleccionado:</strong><br>
+                    <strong>Selected file:</strong><br>
                     ${file.name} (${(file.size / 1024).toFixed(2)} KB)
                 `;
                 selectedFileDiv.style.display = 'block';
                 convertBtn.disabled = false;
-                convertBtn.textContent = '🚀 Convertir ' + file.name;
+                convertBtn.textContent = 'Convert ' + file.name;
             }
         });
         
-        // Drag and drop functionality
         const uploadArea = document.querySelector('.upload-area');
         
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {

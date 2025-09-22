@@ -1,4 +1,4 @@
-﻿package com.example.scidataflow_json_csv_integration.service;
+package com.example.scidataflow_json_csv_integration.service;
 
 import com.example.scidataflow_json_csv_integration.exception.CsvWritingException;
 import com.example.scidataflow_json_csv_integration.exception.JsonProcessingException;
@@ -19,12 +19,12 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for JsonToCsvConverterService.
- * These tests validate the integration functionality between JSON reading and CSV writing
- * to ensure correct operation before integration into the general workflow.
+ * Comprehensive test suite that validates the integration functionality between
+ * JSON reading and CSV writing services. Tests ensure proper coordination between
+ * services, error handling, and end-to-end conversion scenarios using mocked dependencies.
  * 
- * @author Digital NAO Team
- * @version 1.0
- * @since 2025-09-21
+ * @author Melany Rivera
+ * @since 21/09/2025
  */
 class JsonToCsvConverterServiceTest {
 
@@ -41,6 +41,11 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Set up the test environment before each test.
+     * Initializes Mockito mocks and creates a fresh JsonToCsvConverterService instance
+     * with mocked dependencies to ensure test isolation and controlled behavior.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @BeforeEach
     void setUp() {
@@ -50,10 +55,17 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test successful JSON to CSV conversion.
+     * Verifies that the converter service properly coordinates between JSON reader
+     * and CSV writer services to successfully convert a JSON file containing Person
+     * data to CSV format. Tests the happy path scenario with valid inputs and
+     * confirms the correct number of processed persons is returned.
+     * 
+     * @throws Exception if conversion process fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_ValidFiles_ShouldReturnPersonCount() throws Exception {
-        // Arrange
         String jsonFilePath = "input.json";
         String csvFilePath = "output.csv";
         
@@ -66,10 +78,8 @@ class JsonToCsvConverterServiceTest {
         when(csvWriterService.isPathWritable(csvFilePath)).thenReturn(true);
         when(jsonReaderService.readPersonsFromJson(jsonFilePath)).thenReturn(persons);
 
-        // Act
         int result = converterService.convertJsonToCsv(jsonFilePath, csvFilePath);
 
-        // Assert
         assertEquals(2, result);
         verify(jsonReaderService).readPersonsFromJson(jsonFilePath);
         verify(csvWriterService).writePersonsToCsv(persons, csvFilePath);
@@ -77,10 +87,16 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test JSON to CSV conversion with custom delimiter.
+     * Verifies that the converter service properly passes custom formatting options
+     * (delimiter, quote character, escape character) to the CSV writer service.
+     * This ensures flexible CSV output formatting based on specific requirements.
+     * 
+     * @throws Exception if conversion process fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_WithCustomDelimiter_ShouldUseCustomFormat() throws Exception {
-        // Arrange
         String jsonFilePath = "input.json";
         String csvFilePath = "output.csv";
         char delimiter = ';';
@@ -95,10 +111,8 @@ class JsonToCsvConverterServiceTest {
         when(csvWriterService.isPathWritable(csvFilePath)).thenReturn(true);
         when(jsonReaderService.readPersonsFromJson(jsonFilePath)).thenReturn(persons);
 
-        // Act
         int result = converterService.convertJsonToCsv(jsonFilePath, csvFilePath, delimiter, quoteChar, escapeChar);
 
-        // Assert
         assertEquals(1, result);
         verify(jsonReaderService).readPersonsFromJson(jsonFilePath);
         verify(csvWriterService).writePersonsToCsv(persons, csvFilePath, delimiter, quoteChar, escapeChar);
@@ -106,10 +120,16 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test conversion with empty JSON file should return 0.
+     * Verifies that the converter service properly handles empty JSON files
+     * by returning zero as the count of processed persons and avoiding
+     * unnecessary CSV writing operations for empty datasets.
+     * 
+     * @throws Exception if conversion process fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_EmptyJsonFile_ShouldReturnZero() throws Exception {
-        // Arrange
         String jsonFilePath = "empty.json";
         String csvFilePath = "output.csv";
         
@@ -119,10 +139,8 @@ class JsonToCsvConverterServiceTest {
         when(csvWriterService.isPathWritable(csvFilePath)).thenReturn(true);
         when(jsonReaderService.readPersonsFromJson(jsonFilePath)).thenReturn(emptyList);
 
-        // Act
         int result = converterService.convertJsonToCsv(jsonFilePath, csvFilePath);
 
-        // Assert
         assertEquals(0, result);
         verify(jsonReaderService).readPersonsFromJson(jsonFilePath);
         verify(csvWriterService, never()).writePersonsToCsv(any(), any());
@@ -130,13 +148,17 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test conversion with null JSON file path should throw exception.
+     * Verifies that the converter service properly validates input parameters
+     * and throws JsonProcessingException when provided with null JSON file path.
+     * This ensures defensive programming and clear error handling.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_NullJsonFilePath_ShouldThrowException() {
-        // Arrange
         String csvFilePath = "output.csv";
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.convertJsonToCsv(null, csvFilePath));
         
@@ -145,13 +167,17 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test conversion with null CSV file path should throw exception.
+     * Verifies that the converter service properly validates output parameters
+     * and throws CsvWritingException when provided with null CSV file path.
+     * This ensures comprehensive input validation for all required parameters.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_NullCsvFilePath_ShouldThrowException() {
-        // Arrange
         String jsonFilePath = "input.json";
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.convertJsonToCsv(jsonFilePath, null));
         
@@ -160,16 +186,20 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test conversion with unreadable JSON file should throw exception.
+     * Verifies that the converter service properly validates JSON file accessibility
+     * and throws JsonProcessingException when the input file is not readable.
+     * This ensures early detection of file access issues before processing begins.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_UnreadableJsonFile_ShouldThrowException() {
-        // Arrange
         String jsonFilePath = "unreadable.json";
         String csvFilePath = "output.csv";
         
         when(jsonReaderService.isValidJsonFile(jsonFilePath)).thenReturn(false);
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.convertJsonToCsv(jsonFilePath, csvFilePath));
         
@@ -178,17 +208,21 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test conversion with unwritable CSV path should throw exception.
+     * Verifies that the converter service properly validates CSV file writability
+     * and throws JsonProcessingException when the output path is not writable.
+     * This ensures early detection of output file access issues before processing.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_UnwritableCsvPath_ShouldThrowException() {
-        // Arrange
         String jsonFilePath = "input.json";
         String csvFilePath = "unwritable.csv";
         
         when(jsonReaderService.isValidJsonFile(jsonFilePath)).thenReturn(true);
         when(csvWriterService.isPathWritable(csvFilePath)).thenReturn(false);
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.convertJsonToCsv(jsonFilePath, csvFilePath));
         
@@ -197,10 +231,16 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test conversion when JSON reading fails should propagate exception.
+     * Verifies that the converter service properly propagates JsonProcessingExceptions
+     * thrown by the JSON reader service, maintaining the error context and message
+     * for proper error handling in the calling code.
+     * 
+     * @throws Exception if mock setup fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_JsonReadingFails_ShouldPropagateException() throws Exception {
-        // Arrange
         String jsonFilePath = "input.json";
         String csvFilePath = "output.csv";
         
@@ -209,7 +249,6 @@ class JsonToCsvConverterServiceTest {
         when(jsonReaderService.readPersonsFromJson(jsonFilePath))
             .thenThrow(new JsonProcessingException("JSON parsing failed"));
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.convertJsonToCsv(jsonFilePath, csvFilePath));
         
@@ -218,10 +257,16 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test conversion when CSV writing fails should propagate exception.
+     * Verifies that the converter service properly propagates CsvWritingExceptions
+     * thrown by the CSV writer service, maintaining the error context and message
+     * for proper error handling in the calling code.
+     * 
+     * @throws Exception if mock setup fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertJsonToCsv_CsvWritingFails_ShouldPropagateException() throws Exception {
-        // Arrange
         String jsonFilePath = "input.json";
         String csvFilePath = "output.csv";
         
@@ -235,7 +280,6 @@ class JsonToCsvConverterServiceTest {
         doThrow(new CsvWritingException("CSV writing failed"))
             .when(csvWriterService).writePersonsToCsv(persons, csvFilePath);
 
-        // Act & Assert
         CsvWritingException exception = assertThrows(CsvWritingException.class, 
             () -> converterService.convertJsonToCsv(jsonFilePath, csvFilePath));
         
@@ -244,10 +288,16 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test multiple JSON files to single CSV conversion.
+     * Verifies that the converter service can properly combine data from multiple
+     * JSON files into a single CSV output file. Tests the batch processing functionality
+     * and ensures all Person objects from all input files are correctly merged.
+     * 
+     * @throws Exception if conversion process fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertMultipleJsonToCsv_ValidFiles_ShouldCombineAllPersons() throws Exception {
-        // Arrange
         String[] jsonFilePaths = {"file1.json", "file2.json"};
         String csvFilePath = "output.csv";
         
@@ -262,10 +312,8 @@ class JsonToCsvConverterServiceTest {
         when(jsonReaderService.readPersonsFromJson("file1.json")).thenReturn(persons1);
         when(jsonReaderService.readPersonsFromJson("file2.json")).thenReturn(persons2);
 
-        // Act
         int result = converterService.convertMultipleJsonToCsv(jsonFilePaths, csvFilePath);
 
-        // Assert
         assertEquals(2, result);
         verify(jsonReaderService).readPersonsFromJson("file1.json");
         verify(jsonReaderService).readPersonsFromJson("file2.json");
@@ -275,13 +323,17 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test multiple JSON files conversion with null array should throw exception.
+     * Verifies that the converter service properly validates input parameters
+     * and throws JsonProcessingException when provided with null file paths array.
+     * This ensures defensive programming for batch conversion operations.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertMultipleJsonToCsv_NullArray_ShouldThrowException() {
-        // Arrange
         String csvFilePath = "output.csv";
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.convertMultipleJsonToCsv(null, csvFilePath));
         
@@ -290,14 +342,18 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test multiple JSON files conversion with empty array should throw exception.
+     * Verifies that the converter service properly validates input parameters
+     * and throws JsonProcessingException when provided with empty file paths array.
+     * This ensures meaningful batch operations with at least one input file.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testConvertMultipleJsonToCsv_EmptyArray_ShouldThrowException() {
-        // Arrange
         String[] emptyArray = {};
         String csvFilePath = "output.csv";
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.convertMultipleJsonToCsv(emptyArray, csvFilePath));
         
@@ -306,10 +362,16 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test getting conversion statistics.
+     * Verifies that the converter service can generate comprehensive statistics
+     * about JSON data including total count, unique departments, average age,
+     * and average salary. This provides valuable insights for data analysis.
+     * 
+     * @throws Exception if statistics generation fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testGetConversionStatistics_ValidFile_ShouldReturnStatistics() throws Exception {
-        // Arrange
         String jsonFilePath = "input.json";
         
         List<Person> persons = Arrays.asList(
@@ -320,10 +382,8 @@ class JsonToCsvConverterServiceTest {
         
         when(jsonReaderService.readPersonsFromJson(jsonFilePath)).thenReturn(persons);
 
-        // Act
         String statistics = converterService.getConversionStatistics(jsonFilePath);
 
-        // Assert
         assertNotNull(statistics);
         assertTrue(statistics.contains("Total Persons: 3"));
         assertTrue(statistics.contains("Unique Departments: 2"));
@@ -333,16 +393,21 @@ class JsonToCsvConverterServiceTest {
 
     /**
      * Test getting conversion statistics when JSON reading fails should propagate exception.
+     * Verifies that the converter service properly propagates JsonProcessingExceptions
+     * thrown during JSON reading when generating statistics. This ensures consistent
+     * error handling across all service operations.
+     * 
+     * @throws Exception if mock setup fails
+     * @author Melany Rivera
+     * @since 21/09/2025
      */
     @Test
     void testGetConversionStatistics_JsonReadingFails_ShouldPropagateException() throws Exception {
-        // Arrange
         String jsonFilePath = "invalid.json";
         
         when(jsonReaderService.readPersonsFromJson(jsonFilePath))
             .thenThrow(new JsonProcessingException("JSON parsing failed"));
 
-        // Act & Assert
         JsonProcessingException exception = assertThrows(JsonProcessingException.class, 
             () -> converterService.getConversionStatistics(jsonFilePath));
         

@@ -1,4 +1,4 @@
-﻿package com.example.scidataflow_json_csv_integration.service;
+package com.example.scidataflow_json_csv_integration.service;
 
 import com.example.scidataflow_json_csv_integration.exception.JsonProcessingException;
 import com.example.scidataflow_json_csv_integration.model.Person;
@@ -18,16 +18,43 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Servicio para leer archivos JSON y convertirlos en objetos Java.
+ * Proporciona funcionalidad para parsear diferentes tipos de archivos JSON,
+ * incluyendo arrays de personas, objetos individuales y reportes cient?ficos.
+ * 
+ * @author Melany Rivera
+ * @since 21/09/2025
+ */
 @Slf4j
 @Service
 public class JsonReaderService {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * Constructor that initializes JsonReaderService with a configured ObjectMapper.
+     * The ObjectMapper is used for JSON deserialization operations.
+     * 
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     public JsonReaderService() {
         this.objectMapper = new ObjectMapper();
     }
 
+    /**
+     * Reads a JSON file and parses it into a list of Person objects.
+     * This method is the main entry point for JSON-CSV conversion.
+     * Supports multiple JSON formats including person arrays,
+     * individual objects and scientific reports.
+     * 
+     * @param filePath the path to the JSON file to read
+     * @return a list of Person objects parsed from the JSON file
+     * @throws JsonProcessingException if the file cannot be read or parsed
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     public List<Person> readPersonsFromJson(String filePath) throws JsonProcessingException {
         log.info("Starting to read JSON file: {}", filePath);
         
@@ -41,11 +68,23 @@ public class JsonReaderService {
                 throw new JsonProcessingException("File does not exist: " + filePath);
             }
             
+            if (Files.isDirectory(path)) {
+                throw new JsonProcessingException("Path is a directory, not a file: " + filePath);
+            }
+            
             if (!Files.isReadable(path)) {
                 throw new JsonProcessingException("File is not readable: " + filePath);
             }
             
+            if (Files.size(path) == 0) {
+                throw new JsonProcessingException("File is empty: " + filePath);
+            }
+            
             JsonNode rootNode = objectMapper.readTree(new File(filePath));
+            
+            if (rootNode == null || rootNode.isNull()) {
+                throw new JsonProcessingException("JSON file contains null content: " + filePath);
+            }
             
             List<Person> persons = tryParseAsPersonArray(rootNode);
             if (persons != null && !persons.isEmpty()) {
@@ -78,6 +117,16 @@ public class JsonReaderService {
         }
     }
 
+    /**
+     * Reads a JSON file and returns the first person found.
+     * This method is useful when expecting to process a single Person object.
+     * 
+     * @param filePath the path of the JSON file to read
+     * @return the first Person object found in the JSON file
+     * @throws JsonProcessingException if the file cannot be read, parsed, or contains no persons
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     public Person readPersonFromJson(String filePath) throws JsonProcessingException {
         List<Person> persons = readPersonsFromJson(filePath);
         if (persons.isEmpty()) {
@@ -86,6 +135,15 @@ public class JsonReaderService {
         return persons.get(0); // Return the first person
     }
 
+    /**
+     * Attempts to parse the JSON node as an array of Person objects.
+     * Handles both direct arrays and arrays nested under the "persons" key.
+     * 
+     * @param rootNode the root JSON node to parse
+     * @return list of Person objects if parsing succeeds, null otherwise
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     private List<Person> tryParseAsPersonArray(JsonNode rootNode) {
         try {
             if (rootNode.isArray()) {
@@ -102,6 +160,15 @@ public class JsonReaderService {
         return null;
     }
 
+    /**
+     * Attempts to parse the JSON node as an individual Person object.
+     * Verifies the presence of typical Person fields before parsing.
+     * 
+     * @param rootNode the root JSON node to parse
+     * @return Person object if parsing succeeds, null otherwise
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     private Person tryParseAsSinglePerson(JsonNode rootNode) {
         try {
             if (rootNode.isObject() && !rootNode.isArray()) {
@@ -118,6 +185,16 @@ public class JsonReaderService {
         return null;
     }
 
+    /**
+     * Attempts to parse the JSON node as a scientific report with publications.
+     * Converts found publications into Person objects for processing.
+     * Supports direct arrays, nested arrays, and individual publication objects.
+     * 
+     * @param rootNode the root JSON node to parse
+     * @return list of Person objects converted from publications, null if parsing fails
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     private List<Person> tryParseAsScientometricsReport(JsonNode rootNode) {
         try {
             List<Publication> publications = null;
@@ -147,6 +224,15 @@ public class JsonReaderService {
         return null;
     }
 
+    /**
+     * Converts a list of publications into Person objects for CSV processing.
+     * Maps publication fields to equivalent Person fields in an intelligent manner.
+     * 
+     * @param publications list of publications to convert
+     * @return list of Person objects mapped from publications
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     private List<Person> convertPublicationsToPersons(List<Publication> publications) {
         log.debug("Converting {} publications to Person objects", publications.size());
         
@@ -198,6 +284,15 @@ public class JsonReaderService {
         return persons;
     }
 
+    /**
+     * Validates if a JSON file is valid and accessible for reading.
+     * Checks file existence, read permissions, and that it is a regular file.
+     * 
+     * @param filePath the path of the JSON file to validate
+     * @return true if the file is valid and readable, false otherwise
+     * @author Melany Rivera
+     * @since 21/09/2025
+     */
     public boolean isValidJsonFile(String filePath) {
         try {
             if (filePath == null || filePath.trim().isEmpty()) {

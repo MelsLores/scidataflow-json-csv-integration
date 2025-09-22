@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">Acerca de JSON-CSV Converter</title>
+    <title th:text="${title}">About JSON-CSV Converter</title>
     <style>
         * {
             margin: 0;
@@ -162,12 +162,12 @@
     <div class="container">
         <div class="nav-links">
             <a href="/">🏠 Inicio</a>
-            <a href="/about">📋 Acerca de</a>
+            <a href="/about">About</a>
             <a href="/api/v1/converter/health">🩺 Estado API</a>
         </div>
         
         <div class="header">
-            <h1>📋 Acerca del Sistema</h1>
+            <h1>About the System</h1>
             <p th:text="${description}"></p>
             <span class="version-badge" th:text="'Versión ' + ${version}"></span>
         </div>
@@ -197,51 +197,51 @@
         <div class="feature-grid">
             <div class="feature-card">
                 <div class="feature-icon">📁</div>
-                <h3>Carga Fácil</h3>
-                <p>Arrastra y suelta archivos JSON o usa el selector de archivos</p>
+                <h3>Easy Upload</h3>
+                <p>Drag and drop JSON files or use the file selector</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">⚙️</div>
-                <h3>Delimitadores</h3>
-                <p>Configura delimitadores personalizados (coma, punto y coma, pipe, tab)</p>
+                <h3>Delimiters</h3>
+                <p>Configure custom delimiters (comma, semicolon, pipe, tab)</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">🚀</div>
-                <h3>Procesamiento Rápido</h3>
-                <p>Conversión optimizada con manejo de errores robusto</p>
+                <h3>Fast Processing</h3>
+                <p>Optimized conversion with robust error handling</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">💾</div>
-                <h3>Descarga Directa</h3>
-                <p>Descarga inmediata de archivos CSV convertidos</p>
+                <h3>Direct Download</h3>
+                <p>Immediate download of converted CSV files</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <h3>API REST</h3>
-                <p>Endpoints programáticos para integración con otros sistemas</p>
+                <h3>REST API</h3>
+                <p>Programmatic endpoints for integration with other systems</p>
             </div>
             
             <div class="feature-card">
                 <div class="feature-icon">🛡️</div>
-                <h3>Validación</h3>
-                <p>Validación completa de archivos y manejo de excepciones</p>
+                <h3>Validation</h3>
+                <p>Complete file validation and exception handling</p>
             </div>
         </div>
         
         <div class="tech-section">
-            <h2>🔧 Tecnologías Utilizadas</h2>
+            <h2>Technologies Used</h2>
             <div class="tech-grid">
                 <div class="tech-item">
                     <strong>☕ Java 17</strong><br>
                     <small>Runtime Environment</small>
                 </div>
                 <div class="tech-item">
-                    <strong>🍃 Spring Boot 3.5.6</strong><br>
-                    <small>Framework Web</small>
+                    <strong>Spring Boot 3.5.6</strong><br>
+                    <small>Web Framework</small>
                 </div>
                 <div class="tech-item">
                     <strong>🏗️ Maven 3.9.5</strong><br>
@@ -271,16 +271,16 @@
         </div>
         
         <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 15px; margin: 2rem 0;">
-            <h3>🚀 Endpoints API Disponibles:</h3>
+            <h3>Available API Endpoints:</h3>
             <ul style="margin-top: 1rem; line-height: 1.8;">
-                <li><code>GET /api/v1/converter/health</code> - Estado del sistema</li>
-                <li><code>GET /api/v1/converter/info</code> - Información del servicio</li>
-                <li><code>POST /api/v1/converter/convert</code> - Conversión JSON-CSV</li>
+                <li><code>GET /api/v1/converter/health</code> - System status</li>
+                <li><code>GET /api/v1/converter/info</code> - Service information</li>
+                <li><code>POST /api/v1/converter/convert</code> - JSON-CSV conversion</li>
             </ul>
         </div>
         
         <a href="/" class="back-button">
-            🏠 Volver al Convertidor
+            🏠 Back
         </a>
     </div>
 </body>
