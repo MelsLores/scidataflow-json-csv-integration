@@ -1,6 +1,7 @@
 package com.example.scidataflow_json_csv_integration.controller;
 
 import com.example.scidataflow_json_csv_integration.service.JsonToCsvConverterService;
+import com.example.scidataflow_json_csv_integration.service.DataTransformService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter;
  * 
  * This controller provides web endpoints for users to interact
  * with JSON-CSV conversion functionality through a browser interface.
+ * Enhanced with dedicated data transformation capabilities.
  * 
  * @author Melany Rivera
  * @since 21/09/2025
@@ -29,6 +31,9 @@ public class WebController {
 
     @Autowired
     private JsonToCsvConverterService converterService;
+    
+    @Autowired
+    private DataTransformService dataTransformService;
 
     /**
      * Shows the converter main page.
@@ -99,13 +104,20 @@ public class WebController {
             
             // Convert JSON to CSV - using the correct method signature
             char delimiterChar = delimiter.length() > 0 ? delimiter.charAt(0) : ',';
-            converterService.convertJsonToCsv(jsonFileName, csvFileName, delimiterChar, '"', '\\');
+            int recordsConverted = converterService.convertJsonToCsv(jsonFileName, csvFileName, delimiterChar, '"', '\\');
+            
+            // Get transformation statistics using DataTransformService
+            String transformStats = dataTransformService.getTransformationStatistics(
+                recordsConverted, recordsConverted, "JSON"
+            );
             
             // Add success information
             redirectAttributes.addFlashAttribute("success", "File converted successfully!");
             redirectAttributes.addFlashAttribute("originalFile", originalFilename);
             redirectAttributes.addFlashAttribute("csvFile", csvFileName);
             redirectAttributes.addFlashAttribute("fileSize", Files.size(Paths.get(csvFileName)));
+            redirectAttributes.addFlashAttribute("transformStats", transformStats);
+            redirectAttributes.addFlashAttribute("recordsConverted", recordsConverted);
             
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("error", "File processing error: " + e.getMessage());
@@ -152,6 +164,55 @@ public class WebController {
         } else {
             throw new RuntimeException("File not found: " + filename);
         }
+    }
+
+    /**
+     * Shows detailed transformation statistics page.
+     * This endpoint demonstrates the usage of DataTransformService
+     * for providing detailed analytics about data transformations.
+     * 
+     * @param model Spring Model for template rendering
+     * @return the transform-stats template name
+     * 
+     * @author Melany Rivera
+     * @since 25/09/2025
+     */
+    @GetMapping("/transform-stats")
+    public String showTransformationStats(Model model) {
+        model.addAttribute("title", "Data Transformation Statistics");
+        
+        // Example usage of DataTransformService for statistics
+        String sampleStats = dataTransformService.getTransformationStatistics(100, 95, "JSON-Person");
+        model.addAttribute("sampleStats", sampleStats);
+        
+        // Additional transformation info
+        model.addAttribute("transformationTypes", new String[]{
+            "JSON to Person", "Publication to Person", "Scientific Data to Person", "Intelligent Mapping"
+        });
+        
+        return "transform-stats";
+    }
+    
+    /**
+     * API endpoint to get transformation statistics in JSON format.
+     * Useful for programmatic access to transformation data.
+     * 
+     * @param sourceType the type of source data
+     * @param originalCount the original number of objects
+     * @param transformedCount the number of successfully transformed objects
+     * @return transformation statistics as JSON response
+     * 
+     * @author Melany Rivera
+     * @since 25/09/2025
+     */
+    @GetMapping("/api/transform/stats")
+    @ResponseBody
+    public String getTransformationStatsApi(
+            @RequestParam(defaultValue = "JSON") String sourceType,
+            @RequestParam(defaultValue = "0") int originalCount,
+            @RequestParam(defaultValue = "0") int transformedCount) {
+        
+        return dataTransformService.getTransformationStatistics(originalCount, transformedCount, sourceType);
     }
 
     /**

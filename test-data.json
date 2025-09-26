@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "firstName": "Juan",
+    "lastName": "Pérez",
+    "age": 25,
+    "email": "juan.perez@example.com",
+    "city": "Madrid",
+    "active": true
+  },
+  {
+    "id": 2,
+    "firstName": "María",
+    "lastName": "González",
+    "age": 30,
+    "email": "maria.gonzalez@example.com",
+    "city": "Barcelona",
+    "active": false
+  },
+  {
+    "id": 3,
+    "firstName": "Carlos",
+    "lastName": "Rodriguez",
+    "age": 35,
+    "email": "carlos.rodriguez@example.com",
+    "city": "Valencia",
+    "active": true
+  }
+]

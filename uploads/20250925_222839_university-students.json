@@ -1,0 +1,38 @@
+[
+  {
+    "student_first_name": "Emma",
+    "student_last_name": "Thompson",
+    "university_email": "emma.thompson@university.edu",
+    "student_age": 21,
+    "major": "Computer Science",
+    "graduation_year": 2025,
+    "gpa": "3.8"
+  },
+  {
+    "nombre_estudiante": "Carlos",
+    "apellido_estudiante": "Ruiz", 
+    "email_universitario": "carlos.ruiz@universidad.edu",
+    "edad_estudiante": 20,
+    "carrera": "Ingeniería Industrial",
+    "año_graduacion": 2026,
+    "promedio": "8.5"
+  },
+  {
+    "prenom_etudiant": "Camille",
+    "nom_etudiant": "Moreau",
+    "email_universite": "camille.moreau@universite.fr",
+    "age_etudiant": 22,
+    "specialite": "Médecine",
+    "annee_diplome": 2027,
+    "moyenne": "15.2"
+  },
+  {
+    "vorname_student": "Max",
+    "nachname_student": "Weber",
+    "uni_email": "max.weber@universitaet.de", 
+    "alter_student": 23,
+    "studiengang": "Physik",
+    "abschlussjahr": 2024,
+    "durchschnitt": "1.8"
+  }
+]

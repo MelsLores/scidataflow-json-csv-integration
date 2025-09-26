@@ -2,8 +2,6 @@ package com.example.scidataflow_json_csv_integration.service;
 
 import com.example.scidataflow_json_csv_integration.exception.JsonProcessingException;
 import com.example.scidataflow_json_csv_integration.model.Person;
-import com.example.scidataflow_json_csv_integration.model.Publication;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -14,14 +12,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Servicio para leer archivos JSON y convertirlos en objetos Java.
  * Proporciona funcionalidad para parsear diferentes tipos de archivos JSON,
- * incluyendo arrays de personas, objetos individuales y reportes cient?ficos.
+ * incluyendo arrays de personas, objetos individuales y reportes científicos.
+ * Ahora utiliza el sistema de ordenamiento inteligente de DataTransformService.
  * 
  * @author Melany Rivera
  * @since 21/09/2025
@@ -31,32 +29,34 @@ import java.util.List;
 public class JsonReaderService {
 
     private final ObjectMapper objectMapper;
+    private final DataTransformService dataTransformService;
 
     /**
-     * Constructor that initializes JsonReaderService with a configured ObjectMapper.
-     * The ObjectMapper is used for JSON deserialization operations.
+     * Constructor that initializes JsonReaderService with a configured ObjectMapper
+     * and DataTransformService for intelligent data transformation.
      * 
+     * @param dataTransformService service for intelligent data transformation
      * @author Melany Rivera
-     * @since 21/09/2025
+     * @since 25/09/2025
      */
-    public JsonReaderService() {
+    public JsonReaderService(DataTransformService dataTransformService) {
         this.objectMapper = new ObjectMapper();
+        this.dataTransformService = dataTransformService;
     }
 
     /**
-     * Reads a JSON file and parses it into a list of Person objects.
-     * This method is the main entry point for JSON-CSV conversion.
-     * Supports multiple JSON formats including person arrays,
-     * individual objects and scientific reports.
-     * 
+     * Reads a JSON file and parses it into a list of Person objects using intelligent transformation.
+     * This method uses the DataTransformService for universal data recognition and intelligent sorting.
+     * Supports any JSON structure including mixed data types, arrays, objects, and strings.
+     *
      * @param filePath the path to the JSON file to read
      * @return a list of Person objects parsed from the JSON file
      * @throws JsonProcessingException if the file cannot be read or parsed
      * @author Melany Rivera
-     * @since 21/09/2025
+     * @since 25/09/2025
      */
     public List<Person> readPersonsFromJson(String filePath) throws JsonProcessingException {
-        log.info("Starting to read JSON file: {}", filePath);
+        log.info("Starting to read JSON file with intelligent transformation: {}", filePath);
         
         try {
             if (filePath == null || filePath.trim().isEmpty()) {
@@ -79,37 +79,58 @@ public class JsonReaderService {
             if (Files.size(path) == 0) {
                 throw new JsonProcessingException("File is empty: " + filePath);
             }
-            
+
+            // Read JSON as generic objects for universal processing
             JsonNode rootNode = objectMapper.readTree(new File(filePath));
             
             if (rootNode == null || rootNode.isNull()) {
                 throw new JsonProcessingException("JSON file contains null content: " + filePath);
             }
+
+            // Convert JsonNode to generic objects for DataTransformService processing
+            List<Object> rawObjects = new ArrayList<>();
             
-            List<Person> persons = tryParseAsPersonArray(rootNode);
-            if (persons != null && !persons.isEmpty()) {
-                log.info("Successfully parsed {} persons from array structure", persons.size());
-                return persons;
+            if (rootNode.isArray()) {
+                // Handle array of mixed objects
+                for (JsonNode node : rootNode) {
+                    Object obj = convertJsonNodeToObject(node);
+                    if (obj != null) {
+                        rawObjects.add(obj);
+                    }
+                }
+                log.debug("Parsed {} objects from JSON array", rawObjects.size());
+            } else {
+                // Handle single object
+                Object singleObj = convertJsonNodeToObject(rootNode);
+                if (singleObj != null) {
+                    rawObjects.add(singleObj);
+                }
+                log.debug("Parsed single object from JSON");
             }
             
-            Person singlePerson = tryParseAsSinglePerson(rootNode);
-            if (singlePerson != null) {
-                log.info("Successfully parsed single person from JSON");
-                return Arrays.asList(singlePerson);
+            if (rawObjects.isEmpty()) {
+                throw new JsonProcessingException("No valid data found in JSON file: " + filePath);
             }
+
+            // Use DataTransformService for intelligent transformation and sorting
+            String sourceType = determineSourceType(filePath);
+            List<Person> transformedPersons = dataTransformService.transformToPersons(rawObjects, sourceType);
             
-            persons = tryParseAsScientometricsReport(rootNode);
-            if (persons != null && !persons.isEmpty()) {
-                log.info("Successfully converted {} publications to person format", persons.size());
-                return persons;
+            if (transformedPersons == null || transformedPersons.isEmpty()) {
+                throw new JsonProcessingException("Failed to transform JSON data to Person objects: " + filePath);
             }
-            
-            throw new JsonProcessingException("Unable to parse JSON file - unknown structure: " + filePath);
+
+            log.info("Successfully parsed and intelligently transformed {} objects to Person format from: {}", 
+                    transformedPersons.size(), filePath);
+            return transformedPersons;
             
         } catch (IOException e) {
             String errorMessage = "Failed to read JSON file: " + filePath + ". Error: " + e.getMessage();
             log.error(errorMessage, e);
             throw new JsonProcessingException(errorMessage, e);
+        } catch (JsonProcessingException e) {
+            // Re-throw JsonProcessingException as-is
+            throw e;
         } catch (Exception e) {
             String errorMessage = "Unexpected error while processing JSON file: " + filePath + ". Error: " + e.getMessage();
             log.error(errorMessage, e);
@@ -118,6 +139,69 @@ public class JsonReaderService {
     }
 
     /**
+     * Converts a JsonNode to a generic Object for processing by DataTransformService.
+     * 
+     * @param node the JsonNode to convert
+     * @return converted Object or null if conversion fails
+     * @author Melany Rivera
+     * @since 25/09/2025
+     */
+    private Object convertJsonNodeToObject(JsonNode node) {
+        if (node == null || node.isNull()) {
+            return null;
+        }
+        
+        try {
+            if (node.isTextual()) {
+                return node.asText();
+            } else if (node.isObject()) {
+                return objectMapper.convertValue(node, Object.class);
+            } else if (node.isArray()) {
+                List<Object> list = new ArrayList<>();
+                for (JsonNode arrayNode : node) {
+                    Object item = convertJsonNodeToObject(arrayNode);
+                    if (item != null) {
+                        list.add(item);
+                    }
+                }
+                return list;
+            } else {
+                return objectMapper.convertValue(node, Object.class);
+            }
+        } catch (Exception e) {
+            log.warn("Failed to convert JsonNode to Object: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Determines the source type based on file name for logging purposes.
+     * 
+     * @param filePath the file path to analyze
+     * @return source type string
+     * @author Melany Rivera
+     * @since 25/09/2025
+     */
+    private String determineSourceType(String filePath) {
+        if (filePath == null) return "unknown";
+        
+        String fileName = filePath.toLowerCase();
+        if (fileName.contains("person") || fileName.contains("employee")) {
+            return "person-data";
+        } else if (fileName.contains("publication") || fileName.contains("scientometric")) {
+            return "publication-data";
+        } else if (fileName.contains("medical") || fileName.contains("patient")) {
+            return "medical-data";
+        } else if (fileName.contains("product") || fileName.contains("inventory")) {
+            return "product-data";
+        } else if (fileName.contains("student") || fileName.contains("university")) {
+            return "student-data";
+        } else if (fileName.contains("mixed") || fileName.contains("disordered")) {
+            return "mixed-data";
+        } else {
+            return "generic-data";
+        }
+    }    /**
      * Reads a JSON file and returns the first person found.
      * This method is useful when expecting to process a single Person object.
      * 
@@ -133,155 +217,6 @@ public class JsonReaderService {
             throw new JsonProcessingException("No person found in JSON file: " + filePath);
         }
         return persons.get(0); // Return the first person
-    }
-
-    /**
-     * Attempts to parse the JSON node as an array of Person objects.
-     * Handles both direct arrays and arrays nested under the "persons" key.
-     * 
-     * @param rootNode the root JSON node to parse
-     * @return list of Person objects if parsing succeeds, null otherwise
-     * @author Melany Rivera
-     * @since 21/09/2025
-     */
-    private List<Person> tryParseAsPersonArray(JsonNode rootNode) {
-        try {
-            if (rootNode.isArray()) {
-                log.debug("Attempting to parse as Person array");
-                return objectMapper.convertValue(rootNode, new TypeReference<List<Person>>() {});
-            } else if (rootNode.has("persons") && rootNode.get("persons").isArray()) {
-                log.debug("Attempting to parse nested persons array");
-                JsonNode personsNode = rootNode.get("persons");
-                return objectMapper.convertValue(personsNode, new TypeReference<List<Person>>() {});
-            }
-        } catch (Exception e) {
-            log.debug("Failed to parse as Person array: {}", e.getMessage());
-        }
-        return null;
-    }
-
-    /**
-     * Attempts to parse the JSON node as an individual Person object.
-     * Verifies the presence of typical Person fields before parsing.
-     * 
-     * @param rootNode the root JSON node to parse
-     * @return Person object if parsing succeeds, null otherwise
-     * @author Melany Rivera
-     * @since 21/09/2025
-     */
-    private Person tryParseAsSinglePerson(JsonNode rootNode) {
-        try {
-            if (rootNode.isObject() && !rootNode.isArray()) {
-                log.debug("Attempting to parse as single Person object");
-                
-                if (rootNode.has("firstName") || rootNode.has("lastName") || 
-                    rootNode.has("email") || rootNode.has("age")) {
-                    return objectMapper.convertValue(rootNode, Person.class);
-                }
-            }
-        } catch (Exception e) {
-            log.debug("Failed to parse as single Person: {}", e.getMessage());
-        }
-        return null;
-    }
-
-    /**
-     * Attempts to parse the JSON node as a scientific report with publications.
-     * Converts found publications into Person objects for processing.
-     * Supports direct arrays, nested arrays, and individual publication objects.
-     * 
-     * @param rootNode the root JSON node to parse
-     * @return list of Person objects converted from publications, null if parsing fails
-     * @author Melany Rivera
-     * @since 21/09/2025
-     */
-    private List<Person> tryParseAsScientometricsReport(JsonNode rootNode) {
-        try {
-            List<Publication> publications = null;
-            
-            if (rootNode.isArray()) {
-                log.debug("Attempting to parse as Publication array");
-                publications = objectMapper.convertValue(rootNode, new TypeReference<List<Publication>>() {});
-            }
-            else if (rootNode.has("publications") && rootNode.get("publications").isArray()) {
-                log.debug("Attempting to parse nested publications array");
-                JsonNode publicationsNode = rootNode.get("publications");
-                publications = objectMapper.convertValue(publicationsNode, new TypeReference<List<Publication>>() {});
-            }
-            else if (rootNode.isObject() && (rootNode.has("title") || rootNode.has("authors") || rootNode.has("journal"))) {
-                log.debug("Attempting to parse as single Publication object");
-                Publication singlePub = objectMapper.convertValue(rootNode, Publication.class);
-                publications = Arrays.asList(singlePub);
-            }
-            
-            if (publications != null && !publications.isEmpty()) {
-                return convertPublicationsToPersons(publications);
-            }
-            
-        } catch (Exception e) {
-            log.debug("Failed to parse as scientometrics report: {}", e.getMessage());
-        }
-        return null;
-    }
-
-    /**
-     * Converts a list of publications into Person objects for CSV processing.
-     * Maps publication fields to equivalent Person fields in an intelligent manner.
-     * 
-     * @param publications list of publications to convert
-     * @return list of Person objects mapped from publications
-     * @author Melany Rivera
-     * @since 21/09/2025
-     */
-    private List<Person> convertPublicationsToPersons(List<Publication> publications) {
-        log.debug("Converting {} publications to Person objects", publications.size());
-        
-        List<Person> persons = new ArrayList<>();
-        
-        for (int i = 0; i < publications.size(); i++) {
-            Publication pub = publications.get(i);
-            Person person = new Person();
-            
-            person.setId((long) (i + 1));
-            
-            String title = pub.getTitle();
-            if (title != null && title.length() > 50) {
-                title = title.substring(0, 47) + "...";
-            }
-            person.setFirstName(title);
-            
-            person.setLastName(pub.getJournal());
-            
-            String email = "publication" + (i + 1) + "@journal.com";
-            person.setEmail(email);
-            
-            if (pub.getYear() != null) {
-                person.setAge(pub.getYear());
-            } else {
-                person.setAge(2023);
-            }
-            
-            if (pub.getAuthors() != null && !pub.getAuthors().isEmpty()) {
-                String department = pub.getAuthors().get(0);
-                if (pub.getAuthors().size() > 1) {
-                    department += " et al.";
-                }
-                person.setDepartment(department);
-            } else {
-                person.setDepartment("Unknown Author");
-            }
-            
-            if (pub.getCitations() != null) {
-                person.setSalary(pub.getCitations().doubleValue() * 100);
-            } else {
-                person.setSalary(0.0);
-            }
-            
-            persons.add(person);
-        }
-        
-        log.debug("Successfully converted {} publications to persons", persons.size());
-        return persons;
     }
 
     /**

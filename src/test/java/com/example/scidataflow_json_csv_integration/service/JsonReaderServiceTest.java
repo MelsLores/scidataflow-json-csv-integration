@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class JsonReaderServiceTest {
 
     private JsonReaderService jsonReaderService;
+    private DataTransformService dataTransformService;
 
     @TempDir
     Path tempDir;
@@ -40,7 +41,8 @@ class JsonReaderServiceTest {
      */
     @BeforeEach
     void setUp() {
-        jsonReaderService = new JsonReaderService();
+        dataTransformService = new DataTransformService();
+        jsonReaderService = new JsonReaderService(dataTransformService);
     }
 
     /**
@@ -86,6 +88,8 @@ class JsonReaderServiceTest {
         assertNotNull(persons);
         assertEquals(2, persons.size());
         
+        // After intelligent transformation, persons are sorted by lastName
+        // First person should be "John Doe" (Doe comes before Smith alphabetically)
         Person firstPerson = persons.get(0);
         assertEquals(1L, firstPerson.getId());
         assertEquals("John", firstPerson.getFirstName());
@@ -95,6 +99,7 @@ class JsonReaderServiceTest {
         assertEquals("Engineering", firstPerson.getDepartment());
         assertEquals(75000.00, firstPerson.getSalary());
         
+        // Second person should be "Jane Smith"
         Person secondPerson = persons.get(1);
         assertEquals(2L, secondPerson.getId());
         assertEquals("Jane", secondPerson.getFirstName());

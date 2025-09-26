@@ -1,0 +1,36 @@
+[
+  {
+    "weird_field_name_123": "Strange Name",
+    "another_weird_name": "Another Surname",
+    "contact_info_email": "weird@example.com",
+    "random_number_field": 999,
+    "mixed_data": "Something random"
+  },
+  {
+    "": "Empty field name",
+    "normal_name": "Normal",
+    "normal_surname": "Person", 
+    "email_field": "normal@test.com",
+    "age_maybe": "unknown"
+  },
+  {
+    "complex_nested": {
+      "inner_name": "Deep",
+      "inner_surname": "Nested",
+      "inner_contact": {
+        "email": "deep.nested@example.com",
+        "phone": "+1-555-0123"
+      }
+    }
+  },
+  null,
+  {},
+  {
+    "only_email": "lonely@email.com"
+  },
+  {
+    "solo_nombre": "SinApellido",
+    "edad": "NoNumero",
+    "correo": "formato-raro@dominio-extraño.com"
+  }
+]
