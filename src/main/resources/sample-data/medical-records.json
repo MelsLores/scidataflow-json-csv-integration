@@ -1,0 +1,32 @@
+[
+  {
+    "patient": {
+      "first_name": "Alice",
+      "last_name": "Johnson",
+      "email": "alice.johnson@hospital.com",
+      "age": 45,
+      "insurance": "Blue Cross",
+      "condition": "Diabetes"
+    }
+  },
+  {
+    "paciente": {
+      "nombre": "Roberto", 
+      "apellidos": "Fernández",
+      "correo_electronico": "roberto.fernandez@clinica.es",
+      "anos": 52,
+      "seguro": "Sanitas",
+      "diagnostico": "Hipertensión"
+    }
+  },
+  {
+    "malade": {
+      "prenom": "Sophie",
+      "nom": "Martin",
+      "email": "sophie.martin@hopital.fr", 
+      "age": 38,
+      "assurance": "Mutuelle",
+      "maladie": "Asthme"
+    }
+  }
+]

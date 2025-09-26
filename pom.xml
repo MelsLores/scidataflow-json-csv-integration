@@ -97,6 +97,8 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			
+			<!-- Spring Boot Maven Plugin for Web and Desktop Applications -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -107,7 +109,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<mainClass>com.example.scidataflow_json_csv_integration.cli.JsonToCsvDesktopApplication</mainClass>
+					<finalName>json-csv-desktop-converter</finalName>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

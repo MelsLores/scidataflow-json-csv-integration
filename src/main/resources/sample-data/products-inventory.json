@@ -1,0 +1,26 @@
+[
+  {
+    "product_name": "Laptop Dell",
+    "brand": "Dell Technologies",
+    "contact_email": "sales@dell.com",
+    "price": "$1299.99",
+    "category": "Electronics",
+    "year": "2024"
+  },
+  {
+    "nombre_producto": "iPhone 15",
+    "marca": "Apple Inc",
+    "email_contacto": "soporte@apple.es",
+    "precio": "€1099",
+    "categoria": "Smartphones", 
+    "año": "2023"
+  },
+  {
+    "nom_produit": "Samsung Galaxy",
+    "marque": "Samsung",
+    "courriel": "info@samsung.fr",
+    "prix": "899€",
+    "type": "Téléphone",
+    "annee": "2023"
+  }
+]

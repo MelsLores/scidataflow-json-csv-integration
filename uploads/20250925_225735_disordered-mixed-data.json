@@ -1,0 +1,86 @@
+[
+  {
+    "salary": 75000.00,
+    "randomData": "irrelevant",
+    "email": "jose.martinez@empresa.com",
+    "department": "Technology",
+    "lastName": "Martinez",
+    "age": 28,
+    "firstName": "Jose"
+  },
+  {
+    "title": "Machine Learning in Healthcare",
+    "year": 2023,
+    "authors": ["Dr. Smith", "Dr. Johnson"],
+    "journal": "Medical AI Review",
+    "doi": "10.1234/healthcare.ml.2023"
+  },
+  {
+    "firstName": "Ana",
+    "salary": 95000.50,
+    "lastName": "Rodriguez", 
+    "email": "ana.rodriguez@company.com",
+    "department": "Marketing",
+    "age": 35
+  },
+  {
+    "department": "Human Resources",
+    "age": 42,
+    "email": "carlos.lopez@corp.com",
+    "salary": 68000.75,
+    "lastName": "Lopez",
+    "firstName": "Carlos"
+  },
+  {
+    "patient": "John Doe",
+    "diagnosis": "Hypertension",
+    "treatment": "ACE inhibitors",
+    "doctor": "Dr. Williams",
+    "hospital": "City Medical Center"
+  },
+  {
+    "product": "Laptop Dell Inspiron",
+    "price": 899.99,
+    "category": "Electronics",
+    "stock": 25,
+    "description": "High-performance laptop"
+  },
+  {
+    "email": "maria.garcia@university.edu",
+    "lastName": "Garcia",
+    "firstName": "Maria",
+    "age": 22,
+    "department": "Engineering",
+    "salary": 45000.00
+  },
+  {
+    "student": "Alice Johnson",
+    "grade": 95.5,
+    "course": "Computer Science",
+    "university": "Tech University",
+    "career": "Software Engineering"
+  },
+  {
+    "firstName": "Pedro",
+    "lastName": "Sanchez",
+    "email": "pedro.sanchez@email.com",
+    "age": 29,
+    "department": "Finance",
+    "salary": 82000.00
+  },
+  "Simple string data that should be last",
+  {
+    "title": "AI Research Advances",
+    "authors": ["Dr. Brown", "Prof. Davis"],
+    "journal": "AI Quarterly",
+    "year": 2024
+  },
+  {
+    "age": 31,
+    "department": "Sales",
+    "salary": 71000.00,
+    "firstName": "Luis",
+    "lastName": "Fernandez",
+    "email": "luis.fernandez@sales.com"
+  }
+]

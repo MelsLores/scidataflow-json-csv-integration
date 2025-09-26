@@ -1,0 +1,34 @@
+[
+  {
+    "firstname": "John",
+    "lastname": "Doe", 
+    "email": "john.doe@example.com",
+    "age": "30",
+    "department": "Engineering",
+    "salary": "$75000.00"
+  },
+  {
+    "nombre": "María",
+    "apellido": "García",
+    "correo": "maria.garcia@ejemplo.com", 
+    "edad": "28",
+    "departamento": "Marketing",
+    "salario": "€65000"
+  },
+  {
+    "nom": "Pierre",
+    "nom_famille": "Dubois",
+    "courriel": "pierre.dubois@exemple.fr",
+    "age": "35", 
+    "departement": "Finance",
+    "salaire": "70000€"
+  },
+  {
+    "vorname": "Hans",
+    "nachname": "Mueller", 
+    "e_mail": "hans.mueller@beispiel.de",
+    "alter": "42",
+    "abteilung": "IT",
+    "gehalt": "€80000"
+  }
+]
